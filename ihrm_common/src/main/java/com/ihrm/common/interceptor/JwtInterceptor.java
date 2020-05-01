@@ -7,9 +7,6 @@ import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2020/4/30 17:29
  * 全局拦截器(为了用户成功登录之后将用户的信息共享到request域中)
  */
-@Component
+//@Component
 public class JwtInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired

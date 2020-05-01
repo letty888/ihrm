@@ -1,22 +1,11 @@
 package com.ihrm.system.service;
 
 import com.ihrm.common.bean.QueryPageBean;
-import com.ihrm.common.utils.IdWorker;
+import com.ihrm.common.exception.CommonException;
 import com.ihrm.domain.system.User;
-import com.ihrm.system.dao.UserDao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.lang.annotation.Target;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -78,4 +67,19 @@ public interface UserService {
      * @return User
      */
     User findUserByMobilePhone(String mobile);
+
+    /**
+     * 根据用户手机号查询用户信息
+     * @param mobile 用户手机号
+     * @return User
+     */
+    User findByMobile(String mobile);
+
+    /**
+     * 用户头像上传
+     * @param id 用户id
+     * @param file 用户头像文件
+     * @return imageUrl
+     */
+    String upload(String id, MultipartFile file) throws Exception;
 }

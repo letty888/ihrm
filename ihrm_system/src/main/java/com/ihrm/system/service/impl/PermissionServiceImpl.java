@@ -1,6 +1,6 @@
 package com.ihrm.system.service.impl;
 
-import com.ihrm.common.constants.PermissionConstants;
+import com.ihrm.domain.constants.PermissionConstants;
 import com.ihrm.common.entity.ResultCode;
 import com.ihrm.common.exception.CommonException;
 import com.ihrm.common.utils.BeanMapUtils;

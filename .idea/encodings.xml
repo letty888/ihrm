@@ -6,9 +6,15 @@
     <file url="file://$PROJECT_DIR$/ihrm_common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ihrm_common_model" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ihrm_common_model/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ihrm_common_model/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ihrm_company" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ihrm_company/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ihrm_company/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ihrm_employee/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ihrm_eureka/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ihrm_eureka/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ihrm_system" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ihrm_system/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ihrm_system/src/main/resources" charset="UTF-8" />
   </component>
 </project>

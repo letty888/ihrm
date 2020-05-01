@@ -9,7 +9,6 @@ import com.ihrm.company.service.DepartmentService;
 import com.ihrm.domain.company.Company;
 import com.ihrm.domain.company.Department;
 import com.ihrm.domain.company.response.DeptListResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

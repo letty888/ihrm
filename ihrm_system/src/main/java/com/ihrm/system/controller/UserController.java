@@ -1,10 +1,8 @@
 package com.ihrm.system.controller;
 
 import com.ihrm.common.bean.QueryPageBean;
-import com.ihrm.common.constants.PermissionConstants;
-import com.ihrm.common.constants.UserLevelConstants;
+import com.ihrm.domain.constants.UserLevelConstants;
 import com.ihrm.common.controller.BaseController;
-import com.ihrm.common.entity.PageResult;
 import com.ihrm.common.entity.Result;
 import com.ihrm.common.entity.ResultCode;
 
@@ -14,26 +12,28 @@ import com.ihrm.common.utils.PageUtils;
 import com.ihrm.common.utils.ParamCheckUtils;
 import com.ihrm.common.utils.QueryResultUtils;
 import com.ihrm.domain.system.Permission;
-import com.ihrm.domain.system.Role;
 import com.ihrm.domain.system.User;
 import com.ihrm.domain.system.response.ProfileResult;
 import com.ihrm.domain.system.response.UserResult;
 import com.ihrm.system.service.PermissionService;
 import com.ihrm.system.service.UserService;
-import io.jsonwebtoken.Claims;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.websocket.server.PathParam;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 
 /**
@@ -69,11 +69,27 @@ public class UserController extends BaseController {
     }
 
     /**
+     * 用户头像上传
+     * @param id 用户id
+     * @param file 用户头像图片
+     * @return Result
+     */
+    @RequestMapping("/user/upload/{id}")
+    public Result upload(@PathVariable("id") String id, @RequestParam(name = "file") MultipartFile file) throws Exception {
+        if (file == null) {
+            return new Result(ResultCode.FILE_ERROR);
+        }
+        String imageUrl = userService.upload(id, file);
+        return new Result(ResultCode.SUCCESS, imageUrl);
+    }
+
+    /**
      * 根据id删除用户
      *
      * @param id 用户id
      * @return Result
      */
+    @RequiresPermissions(value = "API-USER-DELETE")
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE, name = "API-USER-DELETE")
     public Result deleteById(@PathVariable("id") String id) {
         userService.deleteById(id);
@@ -139,6 +155,13 @@ public class UserController extends BaseController {
         return new Result(ResultCode.SUCCESS);
     }
 
+
+    public static void main(String[] args) {
+        String md5Password = new Md5Hash("123456", "13800000003", 3).toString();
+        System.out.println(md5Password);
+    }
+
+
     /**
      * 用户登录
      *
@@ -152,6 +175,18 @@ public class UserController extends BaseController {
         String mobile = map.get("mobile");
         String password = map.get("password");
         if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(password)) {
+            return new Result(ResultCode.USERNAME_OR_PASSWORD_ERROR);
+        }
+        //对密码加密
+        password = new Md5Hash(password, mobile, 3).toString();
+        UsernamePasswordToken upToken = new UsernamePasswordToken(mobile, password);
+        //获取subject
+        Subject subject = SecurityUtils.getSubject();
+        subject.login(upToken);
+        Serializable id = subject.getSession().getId();
+        return new Result(ResultCode.SUCCESS, id);
+        //jwt方式登录
+     /*   if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(password)) {
             return new Result(ResultCode.USERNAME_OR_PASSWORD_ERROR);
         }
         User user = userService.findUserByMobilePhone(mobile);
@@ -184,15 +219,15 @@ public class UserController extends BaseController {
             String token = jwtUtils.createJwt(user.getId(), user.getUsername(), paramMap);
             //将生成的jwt令牌添加到请求头中,注意,后期别的项目中可以采用这种方式,这个项目中只要将token返回给前端就好,
             // 前端代码中已经手动添加了请求头,所以不用在后台操作cookie了
-            /*Cookie cookie = new Cookie("Authorization", "Bearer-" + token);
+            *//*Cookie cookie = new Cookie("Authorization", "Bearer-" + token);
             cookie.setPath("/");
             //默认单位是秒,这里设置存活时间为24个小时
             cookie.setMaxAge(60 * 60 * 24);
-            response.addCookie(cookie);*/
+            response.addCookie(cookie);*//*
             return new Result(ResultCode.SUCCESS, token);
         } else {
             return new Result(ResultCode.USERNAME_OR_PASSWORD_ERROR);
-        }
+        }*/
     }
 
     /**
@@ -204,16 +239,8 @@ public class UserController extends BaseController {
      */
     @PostMapping(value = "/profile")
     public Result profile(HttpServletRequest request) throws CommonException {
-      /*  String authorization = request.getHeader("Authorization");
-        if (StringUtils.isEmpty(authorization) || !authorization.startsWith("Bearer")) {
-            throw new CommonException(ResultCode.UNAUTHENTICATED);
-        }
-        String token = authorization.replace("Bearer ", "");
-        if (StringUtils.isEmpty(token)) {
-            throw new CommonException(ResultCode.UNAUTHENTICATED);
-        }
-       Claims claims = jwtUtils.parseJwt(token);*/
-        String userId = claims.getId();
+        //使用jwt方式获取用户信息
+       /* String userId = claims.getId();
         User user = userService.findById(userId);
         if (user == null) {
             return new Result(ResultCode.UNAUTHENTICATED);
@@ -232,7 +259,14 @@ public class UserController extends BaseController {
             }
             List<Permission> permissionList = permissionService.findAll(map);
             profileResult = new ProfileResult(user, permissionList);
-        }
-        return new Result(ResultCode.SUCCESS, profileResult);
+        }*/
+        //使用shiro框架获取安全数据
+        //获取session中的安全数据
+        Subject subject = SecurityUtils.getSubject();
+        //1.subject获取所有的安全数据集合
+        PrincipalCollection principals = subject.getPrincipals();
+        //2.获取安全数据
+        ProfileResult result = (ProfileResult) principals.getPrimaryPrincipal();
+        return new Result(ResultCode.SUCCESS, result);
     }
 }

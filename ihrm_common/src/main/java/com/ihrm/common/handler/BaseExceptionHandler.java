@@ -3,6 +3,8 @@ package com.ihrm.common.handler;
 import com.ihrm.common.entity.Result;
 import com.ihrm.common.entity.ResultCode;
 import com.ihrm.common.exception.CommonException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,6 +31,10 @@ public class BaseExceptionHandler {
             //类型转型
             CommonException ce = (CommonException) e;
             result = new Result(ce.getResultCode());
+        } else if (e instanceof UnknownAccountException) {
+            result = new Result(ResultCode.USERNAME_OR_PASSWORD_ERROR);
+        } else if (e instanceof AuthorizationException) {
+            result = new Result(ResultCode.UNAUTHORISE);
         } else {
             result = new Result(ResultCode.SERVER_ERROR);
         }

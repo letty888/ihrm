@@ -27,7 +27,10 @@ public enum ResultCode {
 
     //---权限操作返回码----
     //---其他操作返回码----
-    NO_DATA(false, 00000, "抱歉,没有查询到相应数据");
+    NO_DATA(false, 00000, "抱歉,没有查询到相应数据"),
+    NO_QR_CODE(false, 00001, "此链接已失效,请重新登录"),
+    FILE_ERROR(false, 00002, "所传文件为空"),
+    NO_INCLUDE_FACE(false, 00003, "图像中未识别到人脸,请重新拍照!");
 
     //操作是否成功
     boolean success;

@@ -93,6 +93,10 @@ public class User implements Serializable {
     private String departmentName;
 
     /**
+     * 用户头像
+     */
+    private String staffPhoto;
+    /**
      * level
      * String
      * saasAdmin：saas管理员具备所有权限

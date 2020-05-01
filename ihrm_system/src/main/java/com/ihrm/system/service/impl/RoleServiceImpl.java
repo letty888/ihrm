@@ -10,17 +10,10 @@ import com.ihrm.domain.system.Role;
 import com.ihrm.system.dao.PermissionDao;
 import com.ihrm.system.dao.RoleDao;
 import com.ihrm.system.service.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;

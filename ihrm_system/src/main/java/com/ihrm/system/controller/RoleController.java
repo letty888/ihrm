@@ -11,7 +11,6 @@ import com.ihrm.common.utils.QueryResultUtils;
 import com.ihrm.domain.system.Role;
 import com.ihrm.domain.system.response.RoleResult;
 import com.ihrm.system.service.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 

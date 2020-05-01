@@ -17,6 +17,17 @@ spring:
     database: MySQL
     show-sql: true
     open-in-view: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
 jwt:
     key: saas-ihrm
     ttl: 3600000 #有效值为1小时
+ai:
+  appId: 19436965
+  apiKey: yZ3S1vTEZ0ctIHEU1p5xIgo6
+  secretKey: OQC3VkQFqXrSZMczzmhEH34rarR2MWzy
+  imageType: BASE64
+  groupId: zhang
+qr:
+  url: http://localhost:8080/#/facelogin

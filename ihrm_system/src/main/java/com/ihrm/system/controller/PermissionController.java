@@ -8,7 +8,6 @@ import com.ihrm.common.utils.ParamCheckUtils;
 import com.ihrm.common.utils.QueryResultUtils;
 import com.ihrm.domain.system.Permission;
 import com.ihrm.system.service.PermissionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

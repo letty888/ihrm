@@ -1,27 +1,32 @@
 package com.ihrm.domain.system.response;
 
-import com.ihrm.common.constants.PermissionConstants;
+import com.ihrm.domain.constants.PermissionConstants;
 import com.ihrm.domain.system.Permission;
 import com.ihrm.domain.system.Role;
 import com.ihrm.domain.system.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.crazycake.shiro.AuthCachePrincipal;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * @author zhang
  * @version 1.0
  * @date 2020/4/30 9:21
- * 用户信息返回类
+ * 用户信息返回类(也是shiro的安全数据类)
  */
 @Data
 @NoArgsConstructor
-public class ProfileResult {
+public class ProfileResult implements Serializable, AuthCachePrincipal {
 
+    private static final long serialVersionUID = 5177847089781206341L;
     private String mobile;
     private String username;
     private String company;
+    private String companyId;
+    private String userId;
     private Map<String, Object> roles = new HashMap<>(0);
 
     public ProfileResult(User user) {
@@ -31,7 +36,8 @@ public class ProfileResult {
         this.mobile = user.getMobile();
         this.company = user.getCompanyName();
         this.username = user.getUsername();
-
+        this.companyId = user.getCompanyId();
+        this.userId = user.getId();
         Set<Role> roles = user.getRoles();
         if (roles == null || roles.size() <= 0) {
             return;
@@ -71,7 +77,8 @@ public class ProfileResult {
         this.mobile = user.getMobile();
         this.company = user.getCompanyName();
         this.username = user.getUsername();
-
+        this.companyId = user.getCompanyId();
+        this.userId = user.getId();
         Set<String> menus = new HashSet<>(0);
         Set<String> apis = new HashSet<>(0);
         Set<String> points = new HashSet<>(0);
@@ -94,5 +101,10 @@ public class ProfileResult {
             this.roles.put("apis", apis);
             this.roles.put("points", points);
         }
+    }
+
+    @Override
+    public String getAuthCacheKey() {
+        return null;
     }
 }

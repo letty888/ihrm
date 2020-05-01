@@ -1,10 +1,8 @@
 package com.ihrm.common.utils;
 
-import com.ihrm.common.entity.Result;
 import com.ihrm.common.entity.ResultCode;
 import com.ihrm.common.exception.CommonException;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**

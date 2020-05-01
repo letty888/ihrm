@@ -1,11 +1,6 @@
 package com.ihrm.company.service;
 
-import com.ihrm.common.entity.Result;
-import com.ihrm.common.utils.IdWorker;
-import com.ihrm.company.dao.CompanyDao;
 import com.ihrm.domain.company.Company;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
